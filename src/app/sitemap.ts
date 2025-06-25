@@ -1,10 +1,8 @@
 import { MetadataRoute } from "next";
 
-export async function GET(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-
-  // ✅ Fetch categories and subcategories from your API or DB
   const catRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/main-category`);
   const subRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sub-category`);
 
@@ -30,3 +28,6 @@ export async function GET(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
   }));
 }
+
+// ✅ Correct export for App Router sitemap.ts
+export const sitemap = generateSitemap;
