@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# ❌ Disallow sensitive or internal user pages
+Disallow: /login
+Disallow: /register
+Disallow: /cart
+Disallow: /place-order
+Disallow: /my-orders
+Disallow: /account
+
+# ❌ Disallow all admin routes
+Disallow: /admin/
+
+# ❌ Disallow all API endpoints
+Disallow: /api/
+
+# ✅ Sitemap location
+Sitemap: https://canteeno.vercel.app/sitemap.xml
