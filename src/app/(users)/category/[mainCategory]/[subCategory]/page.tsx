@@ -1,20 +1,25 @@
+// app/(users)/category/[mainCategory]/[subCategory]/page.tsx
+
+import type { Metadata } from "next";
 import FoodCard from "@/components/FoodCard";
 import type { Food } from "@/context/CartContext";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { mainCategory: string; subCategory: string };
-}) {
-  /* ✅ await params once */
-  const { mainCategory, subCategory } = await Promise.resolve(params);
+type Params = {
+  mainCategory: string;
+  subCategory: string;
+};
 
-  // Fetch backend data for better SEO
+type PageProps = {
+  params: Promise<Params>;
+};
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { mainCategory, subCategory } = await params;
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/subcat/${subCategory}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/sub-category/${subCategory}`
   );
 
-  /* ───────── fallback ──────── */
   if (!res.ok) {
     const fallbackTitle = `${subCategory.replace(/-/g, " ")} | Canteeno Menu`;
     return {
@@ -31,7 +36,6 @@ export async function generateMetadata({
     };
   }
 
-  /* ───────── success ──────── */
   const { name, description, image } = await res.json();
 
   return {
@@ -48,11 +52,8 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Actual Page Component
-export default async function SubCategoryPage(props: {
-  params: { mainCategory: string; subCategory: string };
-}) {
-  const { subCategory } = await Promise.resolve(props.params);
+export default async function SubCategoryPage({ params }: PageProps) {
+  const { subCategory } = await params;
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/food?subSlug=${subCategory}`,
@@ -69,7 +70,7 @@ export default async function SubCategoryPage(props: {
 
       {!foods.length ? (
         <p className="text-center text-gray-600">
-          No food items found for this sub‑category.
+          No food items found for this sub-category.
         </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">

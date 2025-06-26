@@ -1,15 +1,28 @@
+// app/api/order/[id]/update-status/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db";
-import { Order } from "@/models/ordeModel";
+import { Order } from "@/models/ordeModel";        // ensure correct path
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+type Params = { id: string };
+
+// ─── PATCH ─── Update Order Status ───────────────────────────────
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<Params> }
+) {
+  const { id } = await params;
   await connectDB();
+
   const { status } = await req.json();
-  const order = await Order.findById(params.id);
+  const order = await Order.findById(id);
   if (!order) {
-    return NextResponse.json({ success: false, message: "Order not found" }, { status: 404 });
+    return NextResponse.json(
+      { success: false, message: "Order not found" },
+      { status: 404 }
+    );
   }
 
   order.orderStatus = status;
@@ -18,7 +31,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   return NextResponse.json({ success: true, data: order });
 }
 
-
+// ─── GET ─── List Unpaid Orders (Admin Only) ────────────────────────
 export async function GET(req: NextRequest) {
   await connectDB();
   const session = await getServerSession(authOptions);

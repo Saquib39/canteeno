@@ -1,11 +1,16 @@
+// app/(users)/category/[mainCategory]/page.tsx
+
+import type { Metadata } from "next";
 import DisplaySubCategory from "@/components/DisplaySubCategory";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { mainCategory: string };
-}) {
-  const { mainCategory } = await Promise.resolve(params); // ✅ Suppresses warning
+type Params = { mainCategory: string };
+
+type PageProps = {
+  params: Promise<Params>;
+};
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { mainCategory } = await params;
   const name = mainCategory.replace(/-/g, " ");
   const title = `${name} | Canteeno Categories`;
   const description = `Explore all food options under ${name} at Canteeno. Find delicious meals and combos.`;
@@ -24,10 +29,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function MainCategoryPage(props: {
-  params: { mainCategory: string };
-}) {
-  const { mainCategory } = await Promise.resolve(props.params); // ✅ fixes same issue here too
+export default async function Page({ params }: PageProps) {
+  const { mainCategory } = await params;
 
   return (
     <section className="p-4">

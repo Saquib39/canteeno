@@ -1,33 +1,39 @@
-import { MetadataRoute } from "next";
+// File: src/app/sitemap.ts
 
-export async function generateSitemap(): Promise<MetadataRoute.Sitemap> {
+import { MetadataRoute } from "next";
+import connectDB from "@/lib/db";
+import MainCategory from "@/models/mainCategoryModel";
+import SubCategory from "@/models/subCategoryModel";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // 1. Connect to your database
+  await connectDB();
+
+  // 2. Load categories directly from MongoDB
+  const mainCategories = await MainCategory.find().select("slug updatedAt");
+  const subCategories = await SubCategory.find()
+    .select("slug mainCategory updatedAt")
+    .populate("mainCategory", "slug");
+
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-  const catRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/main-category`);
-  const subRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sub-category`);
-
-  const mainCategories = await catRes.json();
-  const subCategories = await subRes.json();
-
-  const staticRoutes = [
-    "",
-    "/about",
-    "/contact",
-    "/menu",
-  ];
-
-  const dynamicRoutes = [
-    ...mainCategories.data.map((cat: any) => `/category/${cat.slug}`),
-    ...subCategories.data.map((sub: any) => `/category/${sub.mainCategory.slug}/${sub.slug}`),
-  ];
-
-  const allRoutes = [...staticRoutes, ...dynamicRoutes];
-
-  return allRoutes.map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+  // 3. Build your static and dynamic routes
+  const staticRoutes = ["", "/about", "/contact", "/menu"];
+  const dynamicMain = mainCategories.map((cat) => ({
+    url: `${baseUrl}/category/${cat.slug}`,
+    lastModified: cat.updatedAt,
   }));
-}
+  const dynamicSub = subCategories.map((sub) => ({
+    url: `${baseUrl}/category/${sub.mainCategory.slug}/${sub.slug}`,
+    lastModified: sub.updatedAt,
+  }));
 
-// ✅ Correct export for App Router sitemap.ts
-export const sitemap = generateSitemap;
+  // 4. Combine and return in MetadataRoute.Sitemap format
+  return [
+    // static
+    ...staticRoutes.map((route) => ({ url: `${baseUrl}${route}`, lastModified: new Date() })),
+    // dynamic
+    ...dynamicMain,
+    ...dynamicSub,
+  ];
+}
