@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍽️ Canteeno – Smart Canteen Ordering Platform
 
-## Getting Started
+Canteeno is a full-stack food ordering and management platform built for college canteens and cloud kitchens. It allows users to browse, order, and pay for meals easily, while providing admins with powerful tools to manage menus, monitor revenue, and track payments.
 
-First, run the development server:
+---
+
+## 🗈️ Preview
+
+### 🔸 Home Page
+
+![Home Page](./public/images/homepage.png)
+
+### 🔸 Admin Dashboard
+
+![Admin Dashboard](./public/images/dash.png)
+
+---
+
+## 🚀 Tech Stack
+
+* **Frontend**: Next.js (App Router), Tailwind CSS, Framer Motion
+* **Backend**: Node.js, Express.js
+* **Database**: MongoDB Atlas
+* **Auth**: NextAuth (GitHub + Credentials)
+* **Payments**: Razorpay, Cash on Delivery
+* **Image Uploads**: Cloudinary
+* **Deployment**: Vercel
+
+---
+
+## ✨ Features
+
+* 👤 Role-based authentication (User & Admin)
+* 🍛 Browse by category, subcategory, or top weekly picks
+* 🛒 Add to cart and manage item quantity
+* 💸 Pay now with Razorpay or choose **Pay Later**
+* 📜 Track all orders with **paid/unpaid** status
+* 📊 Admin Dashboard with:
+
+  * Total weekly revenue tracking
+  * Daily sales chart (7-day trend)
+  * Pie chart of paid vs unpaid orders
+  * Top 4 selling food items
+* 📦 Admin Panel to:
+
+  * Add main & subcategories
+  * Add new food items
+  * View all orders (paid/unpaid)
+
+---
+
+## 🌐 Live Demo
+
+🔗 [canteeno-three.vercel.app](https://canteeno-three.vercel.app)
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/canteeno.git
+cd canteeno
+```
+
+### 2. Install Dependencies
+
+Use the following command to install all necessary packages:
+
+```bash
+npm install
+```
+
+---
+
+### 3. Configure Environment Variables
+
+Create a `.env.local` file in the root directory of the project and add the following:
+
+```env
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_secret
+MONGODB_URI=your_mongodb_connection_string
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+NEXT_PUBLIC_RAZORPAY_KEY_ID=your_razorpay_key_id
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_secret
+```
+
+> 🔐 **Note**: Never commit this file to GitHub. It contains sensitive data and should be listed in `.gitignore`.
+
+---
+
+### 4. Run the Application Locally
+
+Once everything is set up, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### ✅ You're All Set!
 
-## Learn More
+You're now ready to explore, develop, and test Canteeno locally. For any contribution, feature request, or issue — feel free to fork and submit a pull request!
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---

@@ -121,11 +121,11 @@ export default function Navbar() {
           <Link href="/account" className={linkClass("/account")}>
             Bills
           </Link>
-          {session?.user?.role === "admin" && (
+          {/* {session?.user?.role === "admin" && ( */}
             <Link href="/admin" className={linkClass("/admin")}>
               Admin
             </Link>
-          )}
+          {/* )} */}
           {session ? (
             <button
               onClick={() => {
